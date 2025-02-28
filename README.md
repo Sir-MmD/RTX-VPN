@@ -1,3 +1,5 @@
+# Please use Version 2: https://github.com/Sir-MmD/RTX-VPN/tree/v2
+#
 ## [English](/README.md) | [فارسی](/README_fa.md)
 # L2TP/OpenVPN Server with Xray + Rathole + tun2socks Tunnel
 # RTX-VPN = (Rathole-tun2socks-Xray) VPN
