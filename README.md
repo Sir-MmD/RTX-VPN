@@ -20,15 +20,15 @@ The Edge Server establishes the first connection to the Tunnel Server (reverse t
 Finally, we use Policy-Based Routing (PBR) to route incoming L2TP/OpenVPN traffic to the tun2socks interface.
 
 ## Donate
-🔹USDT-TRC20: ```THuvCFh7Epk926fs23ew6NPFShMrnagVxx```
+🔹USDT-TRC20: ```TEUsjU22rAb3TZNaecEBJAhZXQsFZYU7vv```
 
-🔹TRX: ```THuvCFh7Epk926fs23ew6NPFShMrnagVxx```
+🔹TRX: ```TEUsjU22rAb3TZNaecEBJAhZXQsFZYU7vv```
 
-🔹LTC: ```ltc1quah8ej7ukez53wykehpeew7spya0kzx59r6nfk```
+🔹LTC: ```LS7rJ6nMWwgw9FWpMjSnYa1bAPdzK7bJLM```
 
-🔹BTC: ```bc1qe7z26fhd47xwezp25vk44e8e925ee43txdnfdp```
+🔹BTC: ```1D4cSHY95FoHExSicKYmjeVzdLLxhjTTqs```
 
-🔹ETH: ```0x7Bb6CfF428F75b468Ea49657D345Efc45C7104C9```
+🔹ETH: ```0x03fde84612e0d572db7a18efeeec590ad3fa5dfb```
 ## Installation Tutorial
 https://youtu.be/Djc6CfClCvM
 ## Installation
