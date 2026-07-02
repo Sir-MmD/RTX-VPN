@@ -138,16 +138,19 @@ pkg_refresh() {
 }
 
 pkg_install() {
-  local generic names=()
+  # POSIX-friendly (no arrays): build a space-separated list and rely on word
+  # splitting so a generic token like "build" -> "gcc gcc-c++ make" expands to
+  # multiple packages. Keep the install command args unquoted on purpose.
+  local generic names
+  names=""
   for generic in "$@"; do
-    # shellcheck disable=SC2206
-    names+=( $(map_pkg "$generic") )
+    names="$names $(map_pkg "$generic")"
   done
-  echo "Installing: ${CYAN}${names[*]}${NC}"
+  echo "Installing:${CYAN}${names}${NC}"
   case "$PKG" in
-    apt)     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${names[@]}" ;;
-    dnf|yum) $PKG install -y "${names[@]}" ;;
-    pacman)  pacman -S --noconfirm --needed "${names[@]}" ;;
+    apt)     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $names ;;
+    dnf|yum) $PKG install -y $names ;;
+    pacman)  pacman -S --noconfirm --needed $names ;;
   esac
 }
 
@@ -476,8 +479,8 @@ uuid_tunnel() {
 
 uuid_edge() {
   if [ "$RTX_NONINTERACTIVE" != "1" ]; then
-    read -rp "Enter UUID: " RTX_UUID
-    read -rp "Enter Tunnel IP: " RTX_TUNNEL_IP
+    printf 'Enter UUID: ';       read -r RTX_UUID
+    printf 'Enter Tunnel IP: ';  read -r RTX_TUNNEL_IP
   fi
   UUID="$RTX_UUID"
   sed -i "s/\"uuid\"/\"$RTX_UUID\"/g" /opt/rtxvpn_v2/edge/edge.json
@@ -586,13 +589,13 @@ echo "2. Setup Edge"
 echo "3. Uninstall"
 echo ""
 while true; do
-  read -rp "Enter your choice (1, 2 or 3): " choice
+  printf 'Enter your choice (1, 2 or 3): '; read -r choice
   case "$choice" in
     1)
-      if [ -z "$RTX_SE_ADMIN_PASS" ]; then read -rp "Set SoftEther admin password: " RTX_SE_ADMIN_PASS; fi
-      read -rp "Set L2TP/IPsec pre-shared key [${RTX_SE_PSK}]: " _p; RTX_SE_PSK="${_p:-$RTX_SE_PSK}"
-      read -rp "Set VPN username [${RTX_VPN_USER}]: " _u; RTX_VPN_USER="${_u:-$RTX_VPN_USER}"
-      read -rp "Set VPN user password [${RTX_VPN_PASS}]: " _w; RTX_VPN_PASS="${_w:-$RTX_VPN_PASS}"
+      if [ -z "$RTX_SE_ADMIN_PASS" ]; then printf 'Set SoftEther admin password: '; read -r RTX_SE_ADMIN_PASS; fi
+      printf 'Set L2TP/IPsec pre-shared key [%s]: ' "$RTX_SE_PSK"; read -r _p; RTX_SE_PSK="${_p:-$RTX_SE_PSK}"
+      printf 'Set VPN username [%s]: ' "$RTX_VPN_USER"; read -r _u; RTX_VPN_USER="${_u:-$RTX_VPN_USER}"
+      printf 'Set VPN user password [%s]: ' "$RTX_VPN_PASS"; read -r _w; RTX_VPN_PASS="${_w:-$RTX_VPN_PASS}"
       do_tunnel; break ;;
     2) do_edge; break ;;
     3) uninstall; break ;;
