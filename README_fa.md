@@ -2,7 +2,7 @@
 # RTX-VPN v2 + SoftEther
 # L2TP/OpenVPN/SSTP Server with Rathole + Tun2socks + Xray + Tunnel + SoftEther
 # RTX-VPN = (Rathole-tun2socks-Xray) VPN
-![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v2/menu.png)
+![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v3/menu.png)
 
 ## این اسکریپت  چی هستش؟
 این اسکریپت یک راه حل برای راه اندازی تانل و سرور L2TP/OpenVPN/SSTP به همراه SoftEther در مناطق محدود شده هستش (مثل ایران و چین)
@@ -15,7 +15,7 @@
 - Radius (برای مدیریت اکانت حرفه ای)
 
 ## دیاگرام
-![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v2/diagram.png)
+![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v3/diagram.png)
 
 ## چجوری کار میکنه؟
 به دو سرور نیاز داریم: یک سرور برای کانکشن ورودی ترافیک L2TP/OpenVPN/SSTP به همراه SoftEther (سرور ایران) و یکی برای سرور Edge (سرور خارج). سرور اول (سرور تانل) سروری هستش که محدودیتی در اتصال ورودی L2TP/OpenVPN/SSTP در اون برخلاف سرور Edge (سرور خارج) که نمیشه بصورت مستقیم بهش متصل شد وجود نداره.
@@ -40,14 +40,14 @@ https://www.youtube.com/watch?v=TbIPd9ni1PU
 
 ## نصب
 ```bash
-sh -c "$(wget https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/v2/rtxvpn_v2.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/v3/rtxvpn_v2.sh -O -)"
 ```
 
 ## سیستم عامل های پشتیبانی شده
 این اسکریپت از تمامی سیستم عامل های Debian بیس که از systemd استفاده میکنند پشتیبانی میکنه
 
 ## تست سرعت
-![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v2/speedtest.jpg)
+![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v3/speedtest.jpg)
 
 ## حل مشکل اتصال OpenVPN
 کانفیگ OpenVPN تهیه شده از SoftEther از cipher قدیمی استفاده میکنه که برای حل این موضوع باید این متن رو زیر ```cipher AES-128-CBC``` در فایل کانفیگتون وارد کنید:

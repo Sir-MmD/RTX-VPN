@@ -48,7 +48,6 @@ signal.signal(signal.SIGTERM, shutdown_handler)
 
 # Wait for processes
 rathole_process.wait()
-tun2socks_process.wait()
 xray_process.wait()
 
 log("VPN Service finished")

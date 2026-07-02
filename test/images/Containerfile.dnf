@@ -1,0 +1,16 @@
+ARG BASE=fedora:latest
+FROM ${BASE}
+ENV container=podman
+RUN (dnf -y install systemd iproute iptables-nft procps-ng wget unzip tar sudo \
+      python3 ca-certificates curl iputils bind-utils tcpdump || \
+     yum -y install systemd iproute iptables procps-ng wget unzip tar sudo \
+      python3 ca-certificates curl iputils bind-utils tcpdump) && \
+    (dnf clean all || yum clean all) || true
+# Ensure a unique MAC per container: some distros (Fedora) derive a "stable"
+# MAC from /etc/machine-id via systemd-udev, which is identical across
+# containers built from one image and collides on the shared bridge.
+RUN mkdir -p /etc/systemd/network && \
+    printf '[Match]\nOriginalName=e*\n\n[Link]\nMACAddressPolicy=none\n' > /etc/systemd/network/99-keepmac.link && \
+    : > /etc/machine-id
+STOPSIGNAL SIGRTMIN+3
+CMD ["/sbin/init"]

@@ -1,0 +1,9 @@
+FROM debian:12
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      iproute2 iptables procps wget curl unzip tar ca-certificates \
+      iputils-ping dnsutils tcpdump python3 \
+      openvpn isc-dhcp-client \
+      strongswan xl2tpd ppp \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+CMD ["sleep","infinity"]

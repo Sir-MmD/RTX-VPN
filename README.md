@@ -2,7 +2,7 @@
 # RTX-VPN v2 + SoftEther
 # L2TP/OpenVPN/SSTP Server with Rathole + Tun2socks + Xray + Tunnel + SoftEther
 # RTX-VPN = (Rathole-tun2socks-Xray) VPN
-![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v2/menu.png)
+![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v3/menu.png)
 
 ## What Does this script do?
 This script provides a solution for setting up L2TP/OpenVPN/SSTP server via "SoftEther" and tunnel via "Rathole+Tun2socks+Xray" in restricted locations (e.g., Iran, China).
@@ -15,7 +15,7 @@ This script provides a solution for setting up L2TP/OpenVPN/SSTP server via "Sof
 - Radius (For Advanced Account Management)
 
 ## Diagram
-![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v2/diagram.png)
+![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v3/diagram.png)
 
 ## How does it work?
 We need two servers: one for incoming L2TP/OpenVPN/SSTP connections and SoftEther to deploy and the other as the endpoint of our connection. The first server (Tunnel Server) will be considered a server with no limit on incoming L2TP/OpenVPN/SSTP traffic, unlike the Edge Server, which we cannot connect to directly.
@@ -40,14 +40,44 @@ https://www.youtube.com/watch?v=TbIPd9ni1PU
 
 ## Installation
 ```bash
-sh -c "$(wget https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/v2/rtxvpn_v2.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/v3/rtxvpn_v2.sh -O -)"
+```
+The **Tunnel** setup now configures SoftEther automatically (Virtual Hub, L2TP/IPsec
++ raw L2TP, OpenVPN listener, the VPN user account and the `tap_softether` local
+bridge) via `vpncmd` — no manual SoftEther Server Manager steps are required.
+
+The installer also runs headlessly for automation/CI via environment variables:
+```bash
+# Tunnel
+RTX_ROLE=tunnel RTX_NONINTERACTIVE=1 RTX_SE_ADMIN_PASS=... RTX_SE_PSK=... \
+  RTX_VPN_USER=... RTX_VPN_PASS=... ./rtxvpn_v2.sh
+# Edge
+RTX_ROLE=edge RTX_NONINTERACTIVE=1 RTX_UUID=<from tunnel> RTX_TUNNEL_IP=<tunnel ip> \
+  ./rtxvpn_v2.sh
+```
+
+## Testing
+A full end-to-end test harness lives in [`test/`](test/). Using rootful podman it
+brings up a tunnel + edge + client + exit topology, installs RTX-VPN headlessly,
+and verifies the data path (traffic egresses via the edge) and DNS-leak safety for
+OpenVPN, raw L2TP and L2TP/IPsec — across Debian 12/13, Ubuntu 22/24/26, Fedora,
+Arch and AlmaLinux. See [`test/README.md`](test/README.md).
+```bash
+sudo test/run.sh debian13         # one distro
+sudo test/matrix.sh               # all supported distros
 ```
 
 ## Supported OS
-This script can be run on all Debian-based distributions that use systemd
+This script runs on any systemd-based Linux distribution across the major
+package managers:
+- **Debian / Ubuntu** and derivatives (`apt`) — incl. Debian 12/13, Ubuntu 22.04/24.04/26.04
+- **Fedora / AlmaLinux / RHEL / Rocky** (`dnf`)
+- **Arch Linux** and derivatives (`pacman`)
+
+Architectures: `x86_64` and `aarch64`.
 
 ## Speedtest
-![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v2/speedtest.jpg)
+![App Screenshot](https://raw.githubusercontent.com/Sir-MmD/RTX-VPN/refs/heads/v3/speedtest.jpg)
 
 ## Fix OpenVPN Connection Error
 The OpenVPN client configuration file provided by SoftEther uses an outdated cipher. To fix this issue, please add the following line below ```cipher AES-128-CBC``` in your configuration file:

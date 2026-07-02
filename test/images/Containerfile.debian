@@ -1,0 +1,17 @@
+ARG BASE=debian:12
+FROM ${BASE}
+ENV DEBIAN_FRONTEND=noninteractive container=podman
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      systemd systemd-sysv dbus \
+      iproute2 iptables procps wget unzip tar sudo python3 ca-certificates tcpdump \
+      curl iputils-ping dnsutils \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# systemd as PID1
+# Ensure a unique MAC per container: some distros (Fedora) derive a "stable"
+# MAC from /etc/machine-id via systemd-udev, which is identical across
+# containers built from one image and collides on the shared bridge.
+RUN mkdir -p /etc/systemd/network && \
+    printf '[Match]\nOriginalName=e*\n\n[Link]\nMACAddressPolicy=none\n' > /etc/systemd/network/99-keepmac.link && \
+    : > /etc/machine-id
+STOPSIGNAL SIGRTMIN+3
+CMD ["/sbin/init"]

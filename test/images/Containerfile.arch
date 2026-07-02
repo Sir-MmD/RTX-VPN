@@ -1,0 +1,13 @@
+FROM archlinux:latest
+ENV container=podman
+RUN pacman -Sy --noconfirm --needed systemd systemd-sysvcompat iproute2 iptables-nft \
+      procps-ng wget unzip tar sudo python ca-certificates curl bind tcpdump && \
+    pacman -Scc --noconfirm
+# Ensure a unique MAC per container: some distros (Fedora) derive a "stable"
+# MAC from /etc/machine-id via systemd-udev, which is identical across
+# containers built from one image and collides on the shared bridge.
+RUN mkdir -p /etc/systemd/network && \
+    printf '[Match]\nOriginalName=e*\n\n[Link]\nMACAddressPolicy=none\n' > /etc/systemd/network/99-keepmac.link && \
+    : > /etc/machine-id
+STOPSIGNAL SIGRTMIN+3
+CMD ["/sbin/init"]
