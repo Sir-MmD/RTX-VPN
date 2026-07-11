@@ -1,3 +1,5 @@
+# ⚠️ لطفا از پروژه جدید استفاده کنید https://github.com/Sir-MmD/vpn-ui
+
 ## [English](/README.md) | [فارسی](/README_fa.md)
 # RTX-VPN v2 + SoftEther
 # L2TP/OpenVPN/SSTP Server with Rathole + Tun2socks + Xray + Tunnel + SoftEther
